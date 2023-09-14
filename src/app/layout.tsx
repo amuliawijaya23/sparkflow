@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Providers } from '@/redux/provider';
+import { Providers } from '@redux/provider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
