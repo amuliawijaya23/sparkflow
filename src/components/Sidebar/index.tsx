@@ -198,7 +198,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                     justifyContent: 'center',
                   }}>
                   {user.name ? (
-                    <Avatar sx={{ height: 35, width: 35 }} />
+                    <Avatar src={user.image} sx={{ height: 35, width: 35 }} />
                   ) : (
                     <LoginIcon />
                   )}
