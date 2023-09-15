@@ -100,8 +100,12 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
-  const handleSidebarToggle = () => {
-    setOpen(!open);
+  const handleSidebarOpen = () => {
+    setOpen(true);
+  };
+
+  const handleSidebarClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -111,7 +115,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleSidebarToggle}
+            onClick={handleSidebarOpen}
             edge="start"
             sx={{
               marginRight: 5,
@@ -127,6 +131,8 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
       <Drawer
         variant="permanent"
         open={open}
+        onMouseEnter={handleSidebarOpen}
+        onMouseLeave={handleSidebarClose}
         sx={{
           height: '100%',
           display: 'flex',
@@ -135,7 +141,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         }}>
         <Box sx={{ height: '100%' }}>
           <DrawerHeader>
-            <IconButton onClick={handleSidebarToggle}>
+            <IconButton onClick={handleSidebarClose}>
               {theme.direction === 'rtl' ? (
                 <ChevronRightIcon />
               ) : (
@@ -159,18 +165,10 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                       mr: open ? 3 : 'auto',
                       justifyContent: 'center',
                     }}>
-                    {(() => {
-                      switch (index) {
-                        case 0:
-                          return <DashboardIcon />;
-                        case 1:
-                          return <ConstructionIcon />;
-                        case 2:
-                          return <FormatListBulletedIcon />;
-                        case 3:
-                          return <PeopleIcon />;
-                      }
-                    })()}
+                    {index === 0 && <DashboardIcon />}
+                    {index === 1 && <ConstructionIcon />}
+                    {index === 2 && <FormatListBulletedIcon />}
+                    {index === 3 && <PeopleIcon />}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
