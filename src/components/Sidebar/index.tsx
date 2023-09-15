@@ -1,8 +1,9 @@
 'use client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -89,7 +90,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const Sidebar = () => {
+const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -98,7 +99,7 @@ const Sidebar = () => {
   };
 
   return (
-    <>
+    <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -174,7 +175,11 @@ const Sidebar = () => {
           ))}
         </List>
       </Drawer>
-    </>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <DrawerHeader />
+        {children}
+      </Box>
+    </Box>
   );
 };
 

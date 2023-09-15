@@ -17,8 +17,9 @@ export default function RootLayout({
     <html lang="en">
       <ThemeRegistry>
         <body>
-          <Sidebar />
-          <Providers>{children}</Providers>
+          <Providers>
+            <Sidebar>{children}</Sidebar>
+          </Providers>
         </body>
       </ThemeRegistry>
     </html>
