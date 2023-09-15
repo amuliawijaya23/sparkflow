@@ -16,14 +16,18 @@ import {
   IconButton,
   Avatar,
 } from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import ConstructionIcon from '@mui/icons-material/Construction';
 import PeopleIcon from '@mui/icons-material/People';
-
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import ConstructionIcon from '@mui/icons-material/Construction';
+import LoginIcon from '@mui/icons-material/Login';
+
+// Redux
+import { useAppSelector } from '@redux/hooks';
+import { selectUser } from '@redux/reducers/userSlice';
 
 const drawerWidth = 240;
 
@@ -99,6 +103,8 @@ const Drawer = styled(MuiDrawer, {
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+
+  const user = useAppSelector(selectUser);
 
   const handleSidebarOpen = () => {
     setOpen(true);
@@ -191,10 +197,14 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                     mr: open ? 2 : 'auto',
                     justifyContent: 'center',
                   }}>
-                  <Avatar sx={{ height: 35, width: 35 }} />
+                  {user.name ? (
+                    <Avatar sx={{ height: 35, width: 35 }} />
+                  ) : (
+                    <LoginIcon />
+                  )}
                 </ListItemIcon>
                 <ListItemText
-                  primary={'ACCOUNT NAME'}
+                  primary={user.name ? user.name : 'Login'}
                   sx={{ opacity: open ? 1 : 0 }}
                 />
               </ListItemButton>
