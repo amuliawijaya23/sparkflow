@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Providers } from '@redux/provider';
+import ThemeRegistry from '../theme/ThemeRegistry';
+import Sidebar from '@components/Sidebar';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,9 +15,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <Providers>{children}</Providers>
-      </body>
+      <ThemeRegistry>
+        <body>
+          <Sidebar />
+          <Providers>{children}</Providers>
+        </body>
+      </ThemeRegistry>
     </html>
   );
 }
