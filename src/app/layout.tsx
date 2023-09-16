@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { ReduxProvider } from '@redux/provider';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import ThemeRegistry from '../theme/ThemeRegistry';
-import Sidebar from '@components/Sidebar';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,9 +18,7 @@ export default function RootLayout({
       <ThemeRegistry>
         <UserProvider>
           <body>
-            <ReduxProvider>
-              <Sidebar>{children}</Sidebar>
-            </ReduxProvider>
+            <ReduxProvider>{children}</ReduxProvider>
           </body>
         </UserProvider>
       </ThemeRegistry>
