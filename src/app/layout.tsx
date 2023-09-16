@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Providers } from '@redux/provider';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 import ThemeRegistry from '../theme/ThemeRegistry';
 import Sidebar from '@components/Sidebar';
 
@@ -16,11 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeRegistry>
-        <body>
-          <Providers>
-            <Sidebar>{children}</Sidebar>
-          </Providers>
-        </body>
+        <UserProvider>
+          <body>
+            <Providers>
+              <Sidebar>{children}</Sidebar>
+            </Providers>
+          </body>
+        </UserProvider>
       </ThemeRegistry>
     </html>
   );
