@@ -29,6 +29,8 @@ import LoginIcon from '@mui/icons-material/Login';
 import { useAppSelector } from '@redux/hooks';
 import { selectUser } from '@redux/reducers/userSlice';
 
+import { useRouter } from 'next/navigation';
+
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -101,6 +103,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -186,6 +189,11 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           <List>
             <ListItem key={'Account'} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
+                onClick={
+                  user?.nickname
+                    ? () => console.log('Test')
+                    : () => router.push('/api/auth/login')
+                }
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -197,14 +205,18 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                     mr: open ? 2 : 'auto',
                     justifyContent: 'center',
                   }}>
-                  {user.name ? (
-                    <Avatar src={user.image} sx={{ height: 35, width: 35 }} />
+                  {user.nickname ? (
+                    <Avatar
+                      alt={user.nickname}
+                      src={user.picture}
+                      sx={{ height: 35, width: 35 }}
+                    />
                   ) : (
                     <LoginIcon />
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  primary={user.name ? user.name : 'Login'}
+                  primary={user.nickname ? user.nickname : 'Login'}
                   sx={{ opacity: open ? 1 : 0 }}
                 />
               </ListItemButton>

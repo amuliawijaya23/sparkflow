@@ -3,16 +3,24 @@ import { RootState } from '@redux/store';
 
 interface User {
   name: string;
+  nickname: string;
   email: string;
-  image: string;
-  authorization: string;
+  email_verified: boolean;
+  picture: string;
+  sid: string;
+  sub: string;
+  updated_at: string;
 }
 
 const initialState: User = {
   name: '',
+  nickname: '',
   email: '',
-  image: '',
-  authorization: '',
+  email_verified: false,
+  picture: '',
+  sid: '',
+  sub: '',
+  updated_at: '',
 };
 
 export const userSlice = createSlice({
@@ -23,8 +31,10 @@ export const userSlice = createSlice({
     login: (state, action: PayloadAction<User>) => {
       state.name = action.payload.name;
       state.email = action.payload.email;
-      state.image = action.payload.image;
-      state.authorization = action.payload.authorization;
+      state.picture = action.payload.picture;
+      state.sid = action.payload.sid;
+      state.sub = action.payload.sub;
+      state.updated_at = action.payload.updated_at;
     },
   },
 });
