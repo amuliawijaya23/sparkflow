@@ -16,6 +16,7 @@ import {
   IconButton,
   Avatar,
   Popover,
+  Paper,
 } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -138,7 +139,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box component={Paper} sx={{ display: 'flex', minHeight: '100vh' }}>
       <AppBar position="fixed" open={open}>
         <Toolbar
           sx={{
@@ -300,7 +301,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           </Popover>
         </Box>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         {children}
       </Box>

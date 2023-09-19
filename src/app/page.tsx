@@ -4,7 +4,7 @@ import Login from '@components/Login';
 
 export default function Home() {
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
+    <Grid container component={Paper} sx={{ height: '100vh' }}>
       <Grid
         xs={false}
         sm={4}

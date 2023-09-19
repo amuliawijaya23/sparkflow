@@ -1,5 +1,7 @@
 'use client';
 
+import { Box } from '@mui/material';
+
 export default function Dashboard() {
-  return <main></main>;
+  return <Box>Hello</Box>;
 }
