@@ -10,7 +10,7 @@ export default function Home() {
         sm={4}
         md={7}
         sx={{
-          // backgroundImage: '',
+          backgroundImage: 'url("/background.jpg")',
           backgroundRepeat: 'no-repeat',
           backgroundColor: 'white',
           backgroundSize: 'cover',
