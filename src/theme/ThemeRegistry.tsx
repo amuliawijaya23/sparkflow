@@ -12,30 +12,81 @@ const roboto = Roboto({
   subsets: ['latin'],
 });
 
-const themeOptions: ThemeOptions = {
+const darkThemeOptions: ThemeOptions = {
   typography: {
     fontSize: 12,
     fontFamily: roboto.style.fontFamily,
   },
   palette: {
+    mode: 'dark',
     background: {
-      default: '#ffffff',
+      default: '#000000',
     },
     primary: {
-      main: '#1976d2',
+      main: '#002147',
+    },
+    secondary: {
+      main: '#ffdf00',
+    },
+    success: {
+      main: '#39ff14',
+    },
+    error: {
+      main: '#ff2800',
+    },
+    warning: {
+      main: '#ff6700',
+    },
+    info: {
+      main: '#bf00ff',
     },
     text: {
-      primary: '#300000',
+      primary: '#f5f5f5',
     },
   },
 };
 
-const theme = createTheme(themeOptions);
+const lightThemeOptions: ThemeOptions = {
+  typography: {
+    fontSize: 12,
+    fontFamily: roboto.style.fontFamily,
+  },
+  palette: {
+    mode: 'light',
+    background: {
+      default: '#000000',
+    },
+    primary: {
+      main: '#002147',
+    },
+    secondary: {
+      main: '#ffdf00',
+    },
+    success: {
+      main: '#39ff14',
+    },
+    error: {
+      main: '#ff2800',
+    },
+    warning: {
+      main: '#ff6700',
+    },
+    info: {
+      main: '#bf00ff',
+    },
+    text: {
+      primary: '#343434',
+    },
+  },
+};
+
+const darkTheme = createTheme(darkThemeOptions);
+const lightTheme = createTheme(lightThemeOptions);
 
 const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={lightTheme}>
         <CssBaseline />
         {children}
       </ThemeProvider>
