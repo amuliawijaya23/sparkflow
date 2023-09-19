@@ -15,13 +15,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <ThemeRegistry>
-        <UserProvider>
-          <body>
-            <ReduxProvider>{children}</ReduxProvider>
-          </body>
-        </UserProvider>
-      </ThemeRegistry>
+      <UserProvider>
+        <body>
+          <ReduxProvider>
+            <ThemeRegistry>{children}</ThemeRegistry>
+          </ReduxProvider>
+        </body>
+      </UserProvider>
     </html>
   );
 }

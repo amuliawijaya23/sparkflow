@@ -1,10 +1,11 @@
 'use client';
-
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material/styles';
 import { Roboto } from 'next/font/google';
-import React from 'react';
 import { NextAppDirEmotionCacheProvider } from './EmotionCache';
+
+import { selectTheme } from '@redux/reducers/themeSlice';
+import { useAppSelector } from '@redux/hooks';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -84,9 +85,11 @@ const darkTheme = createTheme(darkThemeOptions);
 const lightTheme = createTheme(lightThemeOptions);
 
 const ThemeRegistry = ({ children }: { children: React.ReactNode }) => {
+  const mode = useAppSelector(selectTheme);
+
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
         <CssBaseline />
         {children}
       </ThemeProvider>

@@ -23,10 +23,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ConstructionIcon from '@mui/icons-material/Construction';
-import LoginIcon from '@mui/icons-material/Login';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 // Redux
-import { useAppSelector } from '@redux/hooks';
+import { useAppSelector, useAppDispatch } from '@redux/hooks';
+import { toggleMode, selectTheme } from '@redux/reducers/themeSlice';
 import { selectUser } from '@redux/reducers/userSlice';
 
 import { useRouter } from 'next/navigation';
@@ -103,11 +105,16 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
+  const dispatch = useAppDispatch();
+  const mode = useAppSelector(selectTheme);
   const user = useAppSelector(selectUser);
+
+  const toggleThemeMode = () => {
+    dispatch(toggleMode());
+  };
 
   const handleSidebarOpen = () => {
     setOpen(true);
@@ -187,13 +194,31 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         </Box>
         <Box>
           <List>
-            <ListItem key={'Account'} disablePadding sx={{ display: 'block' }}>
+            <ListItem disablePadding sx={{ disply: 'block' }}>
               <ListItemButton
-                onClick={
-                  user?.nickname
-                    ? () => console.log('Test')
-                    : () => router.push('/api/auth/login')
-                }
+                onClick={toggleThemeMode}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}>
+                  {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
+                </ListItemIcon>
+                <ListItemText
+                  primary={`${mode[0].toUpperCase() + mode.substring(1)} Mode`}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+                // onClick={}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -205,18 +230,14 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                     mr: open ? 2 : 'auto',
                     justifyContent: 'center',
                   }}>
-                  {user.nickname ? (
-                    <Avatar
-                      alt={user.nickname}
-                      src={user.picture}
-                      sx={{ height: 35, width: 35 }}
-                    />
-                  ) : (
-                    <LoginIcon />
-                  )}
+                  <Avatar
+                    alt={user.nickname}
+                    src={user.picture}
+                    sx={{ height: 35, width: 35 }}
+                  />
                 </ListItemIcon>
                 <ListItemText
-                  primary={user.nickname ? user.nickname : 'Login'}
+                  primary={user.nickname}
                   sx={{ opacity: open ? 1 : 0 }}
                 />
               </ListItemButton>
