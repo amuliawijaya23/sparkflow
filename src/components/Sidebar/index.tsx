@@ -127,21 +127,51 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleSidebarOpen}
-            edge="start"
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Box
             sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
             }}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            SparkFlow
-          </Typography>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleSidebarOpen}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                ...(open && { display: 'none' }),
+              }}>
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              SparkFlow
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              minWidth: 125,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: mode === 'light' ? '#bf00ff' : '#002147',
+              border: 1,
+              borderRadius: 3,
+              px: 1,
+            }}>
+            <Typography variant="body1">
+              {mode[0].toUpperCase() + mode.substring(1)} Mode
+            </Typography>
+            <IconButton onClick={toggleThemeMode}>
+              {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -194,28 +224,6 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         </Box>
         <Box>
           <List>
-            <ListItem disablePadding sx={{ disply: 'block' }}>
-              <ListItemButton
-                onClick={toggleThemeMode}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}>
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}>
-                  {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
-                </ListItemIcon>
-                <ListItemText
-                  primary={`${mode[0].toUpperCase() + mode.substring(1)} Mode`}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 // onClick={}
