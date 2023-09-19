@@ -15,6 +15,7 @@ import {
   Divider,
   IconButton,
   Avatar,
+  Popover,
 } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -106,7 +107,11 @@ const Drawer = styled(MuiDrawer, {
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const [open, setOpen] = useState<boolean>(false);
+  const [profile, setProfile] = useState<HTMLDivElement | null>(null);
+
+  const profileId = profile ? 'profile-menu' : undefined;
 
   const dispatch = useAppDispatch();
   const mode = useAppSelector(selectTheme);
@@ -122,6 +127,14 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
 
   const handleSidebarClose = () => {
     setOpen(false);
+  };
+
+  const handleProfileOpen = (e: React.MouseEvent<HTMLDivElement>) => {
+    setProfile(e.currentTarget);
+  };
+
+  const handleProfileClose = () => {
+    setProfile(null);
   };
 
   return (
@@ -160,8 +173,6 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              border: 1,
-              borderRadius: 3,
               px: 1,
             }}>
             <Typography variant="body1">
@@ -227,7 +238,8 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           <List>
             <ListItem disablePadding sx={{ display: 'block' }}>
               <ListItemButton
-                // onClick={}
+                onClick={handleProfileOpen}
+                aria-describedby={profileId}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -252,6 +264,40 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
               </ListItemButton>
             </ListItem>
           </List>
+          <Popover
+            id={profileId}
+            open={Boolean(profile)}
+            anchorEl={profile}
+            onClose={handleProfileClose}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}>
+            <List disablePadding>
+              {['Account, Logout'].map((title, index) => (
+                <ListItem
+                  key={`${title}-profile-item`}
+                  disablePadding
+                  sx={{ display: 'block' }}>
+                  <ListItemButton
+                    onClick={
+                      index === 0
+                        ? () => {}
+                        : () => router.push('/api/auth/logout')
+                    }
+                    sx={{
+                      justifyContent: 'initial',
+                      px: 10,
+                    }}>
+                    <ListItemText
+                      primary={title}
+                      sx={{ opacity: Boolean(profile) ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Popover>
         </Box>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
