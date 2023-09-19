@@ -160,7 +160,6 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              backgroundColor: mode === 'light' ? '#bf00ff' : '#002147',
               border: 1,
               borderRadius: 3,
               px: 1,
@@ -168,7 +167,9 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
             <Typography variant="body1">
               {mode[0].toUpperCase() + mode.substring(1)} Mode
             </Typography>
-            <IconButton onClick={toggleThemeMode}>
+            <IconButton
+              onClick={toggleThemeMode}
+              color={mode === 'light' ? 'secondary' : 'info'}>
               {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
           </Box>
