@@ -10,7 +10,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <Sidebar>
       {isLoading && <Loading />}
-      {!isLoading && children}
+      {!isLoading && error && <></>}
+      {!isLoading && !error && children}
     </Sidebar>
   );
 }
