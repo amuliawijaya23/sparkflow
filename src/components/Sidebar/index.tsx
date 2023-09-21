@@ -1,4 +1,3 @@
-'use client';
 import React, { useState } from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
@@ -253,8 +252,8 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                     justifyContent: 'center',
                   }}>
                   <Avatar
-                    alt={user.nickname}
-                    src={user.picture}
+                    alt={user.nickname || ''}
+                    src={user.picture || ''}
                     sx={{ height: 35, width: 35 }}
                   />
                 </ListItemIcon>
@@ -275,7 +274,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
               horizontal: 'left',
             }}>
             <List disablePadding>
-              {['Account, Logout'].map((title, index) => (
+              {['Account', 'Logout'].map((title, index) => (
                 <ListItem
                   key={`${title}-profile-item`}
                   disablePadding

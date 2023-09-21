@@ -1,8 +1,17 @@
+// 'use client';
 import { Unstable_Grid2 as Grid, Paper } from '@mui/material';
+import { getSession } from '@auth0/nextjs-auth0';
+import { redirect } from 'next/navigation';
 
 import Login from '@components/Login';
 
-export default function Home() {
+export default async function Home() {
+  const session = await getSession();
+
+  if (session) {
+    redirect('/dashboard');
+  }
+
   return (
     <Grid container component={Paper} sx={{ height: '100vh' }}>
       <Grid
