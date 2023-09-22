@@ -7,11 +7,13 @@ import useUserData from '../../hooks/useUserData';
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { isLoading, error } = useUserData();
 
-  return (
-    <Sidebar>
-      {isLoading && <Loading />}
-      {!isLoading && error && <></>}
-      {!isLoading && !error && children}
-    </Sidebar>
-  );
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <></>;
+  }
+
+  return <Sidebar>{children}</Sidebar>;
 }

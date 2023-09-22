@@ -12,14 +12,13 @@ const useUserData = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const getUserData = (data: UserProfile) => {
+    const getUserData = async (data: UserProfile) => {
+      console.log('TEST');
       dispatch(login(data));
     };
 
     if (user) {
       getUserData(user);
-    } else {
-      router.push('/');
     }
   }, [dispatch, router, user]);
 
