@@ -1,11 +1,11 @@
-import { Timestamp } from 'mongodb';
 import mongoose, { Schema } from 'mongoose';
 
 const projectSchema = new Schema(
   {
     id: { type: String, required: true },
     name: { type: String, required: true },
-    dueDate: { type: Timestamp, required: true },
+    startDate: { type: Date, required: true },
+    dueDate: { type: Date, required: true },
     assignee: [
       {
         type: Schema.Types.ObjectId,
