@@ -1,4 +1,3 @@
-// 'use client';
 import { Unstable_Grid2 as Grid, Paper } from '@mui/material';
 import { getSession } from '@auth0/nextjs-auth0';
 import { redirect } from 'next/navigation';

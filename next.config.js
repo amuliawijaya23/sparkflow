@@ -7,6 +7,10 @@ const nextConfig = {
       transform: '@mui/icons-material/{{member}}',
     },
   },
+  experimental: {
+    serverActions: true,
+    serverComponentsExternalPackages: ['mongoose', '@typegoose/typegoose'],
+  },
 };
 
 module.exports = nextConfig;
