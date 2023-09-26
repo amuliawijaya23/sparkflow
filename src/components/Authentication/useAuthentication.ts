@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
-import { createUser } from '@actions/user.actions';
+import { createUser, findUser } from '@actions/user.actions';
 
 const useAuthentication = () => {
   const [username, setUsername] = useState<string>('');
@@ -45,6 +45,12 @@ const useAuthentication = () => {
 
     if (!isEmailValid) {
       setError('Please use a valid email address.');
+      return;
+    }
+
+    const user = await findUser(email);
+    if (user !== undefined) {
+      setError('A user with that email address already exists.');
       return;
     }
 
