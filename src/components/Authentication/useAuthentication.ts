@@ -2,12 +2,26 @@ import React, { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 import { createUser, findUser } from '@actions/user.actions';
 
+export const LOGIN = 'LOGIN';
+export const REGISTER = 'REGISTER';
+
 const useAuthentication = () => {
+  const [form, setForm] = useState<string>(LOGIN);
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
+
+  const handleFormLogin = () => {
+    setForm(LOGIN);
+    resetForm();
+  };
+
+  const handleFormRegister = () => {
+    setForm(REGISTER);
+    resetForm();
+  };
 
   const resetForm = () => {
     setUsername('');
@@ -67,20 +81,22 @@ const useAuthentication = () => {
       throw new Error(`An error occured during registration: ${err}`);
     }
     if (success) {
-      resetForm();
+      handleFormLogin();
     }
   };
 
   return {
+    form,
     username,
     email,
     isEmailValid,
     password,
     error,
+    handleFormLogin,
+    handleFormRegister,
     handleUsernameChange,
     handleEmailChange,
     handlePasswordChange,
-    resetForm,
     handleRegister,
   };
 };

@@ -1,37 +1,25 @@
 'use client';
-import { useState } from 'react';
 import { Box, Button, Alert } from '@mui/material';
 import Login from './Login';
 import Register from './Register';
 import useAuthentication from './useAuthentication';
-
-const LOGIN = 'LOGIN';
-const REGISTER = 'REGISTER';
+import { LOGIN, REGISTER } from './useAuthentication';
 
 const Authentication = () => {
-  const [form, setForm] = useState<string>(LOGIN);
   const {
+    form,
     username,
     email,
     isEmailValid,
     password,
     error,
+    handleFormLogin,
+    handleFormRegister,
     handleUsernameChange,
     handleEmailChange,
     handlePasswordChange,
     handleRegister,
-    resetForm,
   } = useAuthentication();
-
-  const handleFormLogin = () => {
-    setForm(LOGIN);
-    resetForm();
-  };
-
-  const handleFormRegister = () => {
-    setForm(REGISTER);
-    resetForm();
-  };
 
   return (
     <Box
