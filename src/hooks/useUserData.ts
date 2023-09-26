@@ -1,31 +1,11 @@
 import { useEffect } from 'react';
-import { useUser } from '@auth0/nextjs-auth0/client';
 import { useAppDispatch } from '@redux/hooks';
 import { login } from '@redux/reducers/userSlice';
-import { UserProfile } from '@auth0/nextjs-auth0/client';
 
 import { useRouter } from 'next/navigation';
 
 const useUserData = () => {
-  const { user, error, isLoading } = useUser();
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  useEffect(() => {
-    const getUserData = async (data: UserProfile) => {
-      console.log('TEST');
-      dispatch(login(data));
-    };
-
-    if (user) {
-      getUserData(user);
-    }
-  }, [dispatch, router, user]);
-
-  return {
-    error,
-    isLoading,
-  };
+  return {};
 };
 
 export default useUserData;

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { ReduxProvider } from '@redux/provider';
-import { UserProvider } from '@auth0/nextjs-auth0/client';
 import ThemeRegistry from '../theme/ThemeRegistry';
 
 export const metadata: Metadata = {
@@ -15,13 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <UserProvider>
-        <body>
-          <ReduxProvider>
-            <ThemeRegistry>{children}</ThemeRegistry>
-          </ReduxProvider>
-        </body>
-      </UserProvider>
+      <body>
+        <ReduxProvider>
+          <ThemeRegistry>{children}</ThemeRegistry>
+        </ReduxProvider>
+      </body>
     </html>
   );
 }
