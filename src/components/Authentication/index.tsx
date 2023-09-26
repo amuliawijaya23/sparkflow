@@ -18,6 +18,7 @@ const Authentication = () => {
     handleUsernameChange,
     handleEmailChange,
     handlePasswordChange,
+    handleRegister,
     resetForm,
   } = useAuthentication();
 
@@ -90,6 +91,7 @@ const Authentication = () => {
           setUsername={handleUsernameChange}
           setEmail={handleEmailChange}
           setPassword={handlePasswordChange}
+          submitForm={handleRegister}
         />
       )}
     </Box>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   FormControl,
@@ -23,6 +23,7 @@ interface RegisterProps {
   setPassword: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
+  submitForm: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Register = ({
@@ -32,6 +33,7 @@ const Register = ({
   setUsername,
   setEmail,
   setPassword,
+  submitForm,
 }: RegisterProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -49,6 +51,7 @@ const Register = ({
         <InputLabel htmlFor="outlined-username">Username</InputLabel>
         <OutlinedInput
           id="outlined-username"
+          type="text"
           onChange={setUsername}
           value={username}
           label="Username"
@@ -89,6 +92,7 @@ const Register = ({
         color="primary"
         fullWidth
         variant="contained"
+        onClick={submitForm}
         sx={{ mt: 2, mb: 1 }}>
         Sign Up
       </Button>
