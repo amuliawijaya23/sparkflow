@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ReduxProvider } from '@redux/provider';
+
 import ThemeRegistry from '../theme/ThemeRegistry';
 
 export const metadata: Metadata = {

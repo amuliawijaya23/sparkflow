@@ -1,9 +1,28 @@
-import { Unstable_Grid2 as Grid, Paper } from '@mui/material';
-import { redirect } from 'next/navigation';
+import {
+  Unstable_Grid2 as Grid,
+  Paper,
+  Box,
+  Typography,
+  Avatar,
+  Link,
+} from '@mui/material';
 
-import Login from '@components/Login';
+import Authentication from '@components/Authentication';
 
 export default async function Home() {
+  const Copyright = () => {
+    return (
+      <Typography variant="body2" align="center" sx={{ mt: 5 }}>
+        {'Copyright © '}
+        <Link color="inherit" href="#">
+          SparkFlow
+        </Link>
+        {` ${new Date().getFullYear()}`}
+        {'.'}
+      </Typography>
+    );
+  };
+
   return (
     <Grid container component={Paper} sx={{ height: '100vh' }}>
       <Grid
@@ -19,7 +38,22 @@ export default async function Home() {
         }}
       />
       <Grid xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <Login />
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}>
+          <Avatar src="" alt="logo" sx={{ width: 100, height: 100, mb: 2 }} />
+          <Typography component="h1" variant="h4">
+            SparkFlow
+          </Typography>
+          <Authentication />
+          <Copyright />
+        </Box>
       </Grid>
     </Grid>
   );
