@@ -54,16 +54,17 @@ const Register = ({
           label="Username"
         />
       </FormControl>
-      <FormControl size="small" variant="outlined" sx={{ mt: 2 }}>
+      <FormControl size="small" variant="outlined" sx={{ mt: 1 }}>
         <InputLabel htmlFor="outlined-email">Email</InputLabel>
         <OutlinedInput
           id="outlined-email"
+          type="email"
           onChange={setEmail}
           value={email}
           label="Email"
         />
       </FormControl>
-      <FormControl sx={{ mt: 2 }} size="small" variant="outlined">
+      <FormControl sx={{ mt: 1 }} size="small" variant="outlined">
         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
         <OutlinedInput
           id="outlined-adornment-password"
