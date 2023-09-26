@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import isEmail from 'validator/lib/isEmail';
+import { createUser } from '@actions/user.actions';
 
 const useAuthentication = () => {
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
 
@@ -22,6 +25,7 @@ const useAuthentication = () => {
   const handleEmailChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
+    setIsEmailValid(isEmail(e.target.value));
     setEmail(e.target.value);
   };
 
@@ -40,21 +44,12 @@ const useAuthentication = () => {
     }
 
     try {
-      const response = await fetch('api/auth/register', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-        }),
+      createUser({
+        username: username,
+        email: email,
+        email_verified: false,
+        password: password,
       });
-
-      if (response.ok) {
-        resetForm();
-      }
     } catch (err) {
       throw new Error(`An error occured during registration: ${err}`);
     }
@@ -63,6 +58,7 @@ const useAuthentication = () => {
   return {
     username,
     email,
+    isEmailValid,
     password,
     error,
     handleUsernameChange,

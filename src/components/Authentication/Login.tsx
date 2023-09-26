@@ -3,6 +3,7 @@ import {
   Button,
   Link,
   FormControl,
+  FormHelperText,
   InputLabel,
   OutlinedInput,
   InputAdornment,
@@ -13,6 +14,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 interface LoginProps {
   email: string;
+  isEmailValid: boolean;
   password: string;
   setEmail: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -22,7 +24,13 @@ interface LoginProps {
   ) => void;
 }
 
-const Login = ({ email, password, setEmail, setPassword }: LoginProps) => {
+const Login = ({
+  email,
+  isEmailValid,
+  password,
+  setEmail,
+  setPassword,
+}: LoginProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -35,7 +43,7 @@ const Login = ({ email, password, setEmail, setPassword }: LoginProps) => {
 
   return (
     <>
-      <FormControl size="small" variant="outlined" sx={{ mt: 2 }}>
+      <FormControl size="small" variant="outlined" sx={{ mt: 1 }}>
         <InputLabel htmlFor="outlined-email">Email</InputLabel>
         <OutlinedInput
           id="outlined-email"
@@ -43,7 +51,11 @@ const Login = ({ email, password, setEmail, setPassword }: LoginProps) => {
           onChange={setEmail}
           value={email}
           label="Email"
+          error={!isEmailValid && email.length > 0}
         />
+        {!isEmailValid && email.length > 0 && (
+          <FormHelperText>Please use a valid email address.</FormHelperText>
+        )}
       </FormControl>
       <FormControl sx={{ mt: 1 }} size="small" variant="outlined">
         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>

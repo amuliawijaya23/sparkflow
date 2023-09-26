@@ -6,6 +6,7 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
+  FormHelperText,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -13,6 +14,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 interface RegisterProps {
   username: string;
   email: string;
+  isEmailValid: boolean;
   password: string;
   setUsername: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -29,6 +31,7 @@ interface RegisterProps {
 const Register = ({
   username,
   email,
+  isEmailValid,
   password,
   setUsername,
   setEmail,
@@ -65,7 +68,11 @@ const Register = ({
           onChange={setEmail}
           value={email}
           label="Email"
+          error={!isEmailValid && email.length > 0}
         />
+        {!isEmailValid && email.length > 0 && (
+          <FormHelperText>Please use a valid email address.</FormHelperText>
+        )}
       </FormControl>
       <FormControl sx={{ mt: 1 }} size="small" variant="outlined">
         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>

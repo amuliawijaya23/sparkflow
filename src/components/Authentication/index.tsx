@@ -13,6 +13,7 @@ const Authentication = () => {
   const {
     username,
     email,
+    isEmailValid,
     password,
     error,
     handleUsernameChange,
@@ -78,6 +79,7 @@ const Authentication = () => {
       {form === LOGIN && (
         <Login
           email={email}
+          isEmailValid={isEmailValid}
           password={password}
           setEmail={handleEmailChange}
           setPassword={handlePasswordChange}
@@ -87,6 +89,7 @@ const Authentication = () => {
         <Register
           username={username}
           email={email}
+          isEmailValid={isEmailValid}
           password={password}
           setUsername={handleUsernameChange}
           setEmail={handleEmailChange}
