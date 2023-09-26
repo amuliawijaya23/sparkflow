@@ -4,14 +4,15 @@ import dbConnect from '@lib/dbConnect';
 import User from '@models/user.model';
 import bcrypt from 'bcryptjs';
 
-export interface User {
+export interface UserData {
   username: string;
   email: string;
-  email_verified: boolean;
+  emailVerified: boolean;
+  picture: string;
   password: string;
 }
 
-export async function createUser(user: User): Promise<void> {
+export async function createUser(user: UserData): Promise<void> {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   await dbConnect();
 
@@ -19,7 +20,8 @@ export async function createUser(user: User): Promise<void> {
     await User.create({
       username: user.username.toLocaleLowerCase(),
       email: user.email.toLocaleLowerCase(),
-      email_verified: user.email_verified,
+      emailVerified: user.emailVerified,
+      picture: user.picture,
       password: hashedPassword,
     });
   } catch (error) {
@@ -27,15 +29,15 @@ export async function createUser(user: User): Promise<void> {
   }
 }
 
-export async function findUser(email: string): Promise<void> {
+export async function findUser(email: string | undefined): Promise<void> {
   await dbConnect();
 
   try {
-    const user = await User.findOne({ email }).select('_id');
+    const user = await User.findOne({ email });
 
     if (user) {
-      const id = user._id.toString();
-      return id;
+      const id = user._doc._id.toString();
+      return { _id: id, ...user._doc };
     }
     return;
   } catch (error) {

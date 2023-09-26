@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Link,
@@ -22,6 +22,7 @@ interface LoginProps {
   setPassword: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
+  signIn: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Login = ({
@@ -30,6 +31,7 @@ const Login = ({
   password,
   setEmail,
   setPassword,
+  signIn,
 }: LoginProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -82,6 +84,7 @@ const Login = ({
         color="primary"
         fullWidth
         variant="contained"
+        onClick={signIn}
         sx={{ mt: 2, mb: 1 }}>
         Sign In
       </Button>

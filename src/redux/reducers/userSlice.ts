@@ -1,16 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@redux/store';
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+
+export interface UserProfile {
+  _id: string;
+  username: string;
+  email: string;
+  emailVerified: boolean;
+  picture: string;
+}
 
 const initialState: UserProfile = {
-  name: '',
-  nickname: '',
+  _id: '',
+  username: '',
   email: '',
-  email_verified: false,
+  emailVerified: false,
   picture: '',
-  sid: '',
-  sub: '',
-  updated_at: '',
 };
 
 export const userSlice = createSlice({
@@ -19,13 +23,11 @@ export const userSlice = createSlice({
   reducers: {
     logout: () => initialState,
     login: (state, action: PayloadAction<UserProfile>) => {
-      state.name = action.payload.name;
-      state.nickname = action.payload.nickname;
+      state._id = action.payload._id;
+      state.username = action.payload.username;
       state.email = action.payload.email;
+      state.emailVerified = action.payload.emailVerified;
       state.picture = action.payload.picture;
-      state.sid = action.payload.sid;
-      state.sub = action.payload.sub;
-      state.updated_at = action.payload.updated_at;
     },
   },
 });

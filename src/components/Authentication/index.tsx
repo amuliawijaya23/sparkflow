@@ -19,6 +19,7 @@ const Authentication = () => {
     handleEmailChange,
     handlePasswordChange,
     handleRegister,
+    handleLogin,
   } = useAuthentication();
 
   return (
@@ -71,6 +72,7 @@ const Authentication = () => {
           password={password}
           setEmail={handleEmailChange}
           setPassword={handlePasswordChange}
+          signIn={handleLogin}
         />
       )}
       {form === REGISTER && (
