@@ -43,6 +43,12 @@ const useAuthentication = () => {
       return;
     }
 
+    if (!isEmailValid) {
+      setError('Please use a valid email address.');
+      return;
+    }
+
+    let success = true;
     try {
       createUser({
         username: username,
@@ -51,7 +57,11 @@ const useAuthentication = () => {
         password: password,
       });
     } catch (err) {
+      success = false;
       throw new Error(`An error occured during registration: ${err}`);
+    }
+    if (success) {
+      resetForm();
     }
   };
 
