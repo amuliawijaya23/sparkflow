@@ -32,7 +32,7 @@ import { useAppSelector, useAppDispatch } from '@redux/hooks';
 import { toggleMode, selectTheme } from '@redux/reducers/themeSlice';
 import { selectUser } from '@redux/reducers/userSlice';
 
-import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 const drawerWidth = 240;
 
@@ -107,7 +107,6 @@ const Drawer = styled(MuiDrawer, {
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
-  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [profile, setProfile] = useState<HTMLDivElement | null>(null);
 
@@ -252,13 +251,13 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                     justifyContent: 'center',
                   }}>
                   <Avatar
-                    alt={user.nickname || ''}
+                    alt={user.username || ''}
                     src={user.picture || ''}
                     sx={{ height: 35, width: 35 }}
                   />
                 </ListItemIcon>
                 <ListItemText
-                  primary={user.nickname}
+                  primary={user.username}
                   sx={{ opacity: open ? 1 : 0 }}
                 />
               </ListItemButton>
@@ -280,11 +279,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                   disablePadding
                   sx={{ display: 'block' }}>
                   <ListItemButton
-                    onClick={
-                      index === 0
-                        ? () => {}
-                        : () => router.push('/api/auth/logout')
-                    }
+                    onClick={index === 0 ? () => {} : () => signOut()}
                     sx={{
                       justifyContent: 'initial',
                       px: 10,
