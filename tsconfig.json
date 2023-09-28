@@ -23,6 +23,7 @@
       "@redux/*": ["./src/redux/*"],
       "@models/*": ["./src/models/*"],
       "@actions/*": ["./src/actions/*"],
+      "@hooks/*": ["./src/hooks/*"],
       "@lib/*": ["./src/lib/*"]
     }
   },

@@ -3,8 +3,8 @@ import { Box, Button, Alert, Typography, Link } from '@mui/material';
 import Loading from '@components/Loading';
 import Login from './Login';
 import Register from './Register';
-import useAuthentication from './useAuthentication';
-import { LOGIN, REGISTER } from './useAuthentication';
+import useAuthentication from '@hooks/useAuthentication';
+import { LOGIN, REGISTER } from '@hooks/useAuthentication';
 
 const Authentication = () => {
   const {
