@@ -1,14 +1,24 @@
 'use client';
-
+import Box from '@mui/material/Box';
 import Sidebar from '@components/Sidebar';
+import Loading from '@components/Loading';
 
-import { useSession } from 'next-auth/react';
+import useApplication from '@hooks/useApplication';
+
 import { redirect } from 'next/navigation';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { data } = useSession();
+  const { status } = useApplication();
 
-  if (!data) {
+  if (status === 'loading') {
+    return (
+      <Box sx={{ width: '100vw', height: '100vh' }}>
+        <Loading />
+      </Box>
+    );
+  }
+
+  if (status === 'unauthenticated') {
     redirect('/');
   }
 

@@ -12,6 +12,18 @@ export interface UserData {
   password: string;
 }
 
+interface UserDB {
+  _id: string;
+  username: string;
+  email: string;
+  emailVerified: boolean;
+  password: string;
+  picture: string;
+  updatedAt: Date;
+  createdAt: Date;
+  __v: number;
+}
+
 export async function createUser(user: UserData): Promise<void> {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   await dbConnect();
@@ -29,7 +41,9 @@ export async function createUser(user: UserData): Promise<void> {
   }
 }
 
-export async function findUser(email: string | undefined): Promise<void> {
+export async function findUser(
+  email: string | null | undefined,
+): Promise<UserDB | null | undefined> {
   await dbConnect();
 
   try {

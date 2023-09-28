@@ -91,6 +91,17 @@ const useAuthentication = () => {
       throw new Error(`An error occured while signing in: ${err}`);
     }
     if (success) {
+      const user = await findUser(email);
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          _id: user?._id,
+          username: user?.username,
+          email: user?.email,
+          emailVerified: user?.emailVerified,
+          picture: user?.picture,
+        }),
+      );
       router.push('/dashboard');
       setLoading(false);
     }
