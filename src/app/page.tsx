@@ -4,25 +4,11 @@ import {
   Box,
   Typography,
   Avatar,
-  Link,
 } from '@mui/material';
 
 import Authentication from '@components/Authentication';
 
 export default async function Home() {
-  const Copyright = () => {
-    return (
-      <Typography variant="body2" align="center" sx={{ mt: 5 }}>
-        {'Copyright © '}
-        <Link color="inherit" href="#">
-          SparkFlow
-        </Link>
-        {` ${new Date().getFullYear()}`}
-        {'.'}
-      </Typography>
-    );
-  };
-
   return (
     <Grid container component={Paper} sx={{ height: '100vh' }}>
       <Grid
@@ -52,7 +38,6 @@ export default async function Home() {
             SparkFlow
           </Typography>
           <Authentication />
-          <Copyright />
         </Box>
       </Grid>
     </Grid>

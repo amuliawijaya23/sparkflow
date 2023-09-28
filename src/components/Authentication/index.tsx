@@ -1,5 +1,6 @@
 'use client';
-import { Box, Button, Alert } from '@mui/material';
+import { Box, Button, Alert, Typography, Link } from '@mui/material';
+import Loading from '@components/Loading';
 import Login from './Login';
 import Register from './Register';
 import useAuthentication from './useAuthentication';
@@ -13,6 +14,7 @@ const Authentication = () => {
     isEmailValid,
     password,
     error,
+    loading,
     handleFormLogin,
     handleFormRegister,
     handleUsernameChange,
@@ -21,6 +23,27 @@ const Authentication = () => {
     handleRegister,
     handleLogin,
   } = useAuthentication();
+
+  const Copyright = () => {
+    return (
+      <Typography variant="body2" align="center" sx={{ mt: 5 }}>
+        {'Copyright © '}
+        <Link color="inherit" href="#">
+          SparkFlow
+        </Link>
+        {` ${new Date().getFullYear()}`}
+        {'.'}
+      </Typography>
+    );
+  };
+
+  if (loading) {
+    return (
+      <Box sx={{ mt: 4 }}>
+        <Loading />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -87,6 +110,7 @@ const Authentication = () => {
           submitForm={handleRegister}
         />
       )}
+      <Copyright />
     </Box>
   );
 };

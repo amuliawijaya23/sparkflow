@@ -3,15 +3,12 @@ import isEmail from 'validator/lib/isEmail';
 import { createUser, findUser } from '@actions/user.actions';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@redux/hooks';
-import { login } from '@redux/reducers/userSlice';
 
 export const LOGIN = 'LOGIN';
 export const REGISTER = 'REGISTER';
 
 const useAuthentication = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   const [form, setForm] = useState<string>(LOGIN);
   const [username, setUsername] = useState<string>('');
@@ -19,6 +16,8 @@ const useAuthentication = () => {
   const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
+
+  const [loading, setLoading] = useState(false);
 
   const handleFormLogin = () => {
     setForm(LOGIN);
@@ -57,15 +56,19 @@ const useAuthentication = () => {
   };
 
   const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    setError('');
+    setLoading(true);
     e.preventDefault();
 
     if (!email || !password) {
       setError('All fields are required.');
+      setLoading(false);
       return;
     }
 
     if (!isEmailValid) {
       setError('Please use a valid email address.');
+      setLoading(false);
       return;
     }
 
@@ -79,47 +82,41 @@ const useAuthentication = () => {
 
       if (res?.error) {
         setError('Invalid email or password.');
+        setLoading(false);
         return;
-      }
-
-      const user = await findUser(email);
-
-      if (user !== undefined) {
-        dispatch(
-          login({
-            _id: user['_id'],
-            username: user['username'],
-            email: user['email'],
-            emailVerified: user['emailVerified'],
-            picture: user['picture'],
-          }),
-        );
       }
     } catch (err) {
       success = false;
+      setLoading(false);
       throw new Error(`An error occured while signing in: ${err}`);
     }
     if (success) {
       router.push('/dashboard');
+      setLoading(false);
     }
   };
 
   const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    setError('');
+    setLoading(true);
     e.preventDefault();
 
     if (!username || !email || !password) {
       setError('All fields are required.');
+      setLoading(false);
       return;
     }
 
     if (!isEmailValid) {
       setError('Please use a valid email address.');
+      setLoading(false);
       return;
     }
 
     const user = await findUser(email);
     if (user !== undefined) {
       setError('A user with that email address already exists.');
+      setLoading(false);
       return;
     }
     let success = true;
@@ -133,10 +130,12 @@ const useAuthentication = () => {
       });
     } catch (err) {
       success = false;
+      setLoading(false);
       throw new Error(`An error occured during registration: ${err}`);
     }
     if (success) {
       handleFormLogin();
+      setLoading(false);
     }
   };
 
@@ -147,6 +146,7 @@ const useAuthentication = () => {
     isEmailValid,
     password,
     error,
+    loading,
     handleFormLogin,
     handleFormRegister,
     handleUsernameChange,
