@@ -105,7 +105,13 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const Sidebar = ({ children }: { children: React.ReactNode }) => {
+const Sidebar = ({
+  children,
+  avatarColor,
+}: {
+  children: React.ReactNode;
+  avatarColor: string;
+}) => {
   const theme = useTheme();
   const [open, setOpen] = useState<boolean>(false);
   const [profile, setProfile] = useState<HTMLDivElement | null>(null);
@@ -251,10 +257,15 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
                     justifyContent: 'center',
                   }}>
                   <Avatar
-                    alt={user.username || ''}
+                    alt={user.username}
                     src={user.picture || ''}
-                    sx={{ height: 35, width: 35 }}
-                  />
+                    sx={{
+                      height: 35,
+                      width: 35,
+                      bgcolor: avatarColor,
+                    }}>
+                    {user.username[0]?.toUpperCase()}
+                  </Avatar>
                 </ListItemIcon>
                 <ListItemText
                   primary={user.username}
