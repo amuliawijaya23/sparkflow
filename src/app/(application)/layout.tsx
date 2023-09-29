@@ -1,6 +1,6 @@
 'use client';
 import Box from '@mui/material/Box';
-import Sidebar from '@components/Sidebar';
+import Navigation from '@components/Navigation';
 import Loading from '@components/Loading';
 
 import useApplication from '@hooks/useApplication';
@@ -29,5 +29,5 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     redirect('/');
   }
 
-  return <Sidebar avatarColor={randomColor}>{children}</Sidebar>;
+  return <Navigation avatarColor={randomColor}>{children}</Navigation>;
 }

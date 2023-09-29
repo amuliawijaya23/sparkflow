@@ -1,37 +1,28 @@
 import React, { useState } from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import {
   Box,
-  Toolbar,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Typography,
   Divider,
   IconButton,
   Avatar,
   Popover,
   Paper,
 } from '@mui/material';
-import PeopleIcon from '@mui/icons-material/People';
-import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import ConstructionIcon from '@mui/icons-material/Construction';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+
+import NavBar from './NavBar';
+import Board from './Board';
 
 // Redux
-import { useAppSelector, useAppDispatch } from '@redux/hooks';
-import { toggleMode, selectTheme } from '@redux/reducers/themeSlice';
+import { useAppSelector } from '@redux/hooks';
 import { selectUser } from '@redux/reducers/userSlice';
-
 import { signOut } from 'next-auth/react';
 
 const drawerWidth = 240;
@@ -66,28 +57,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
@@ -105,7 +74,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const Sidebar = ({
+const Navigation = ({
   children,
   avatarColor,
 }: {
@@ -118,13 +87,7 @@ const Sidebar = ({
 
   const profileId = profile ? 'profile-menu' : undefined;
 
-  const dispatch = useAppDispatch();
-  const mode = useAppSelector(selectTheme);
   const user = useAppSelector(selectUser);
-
-  const toggleThemeMode = () => {
-    dispatch(toggleMode());
-  };
 
   const handleSidebarOpen = () => {
     setOpen(true);
@@ -144,53 +107,7 @@ const Sidebar = ({
 
   return (
     <Box component={Paper} sx={{ display: 'flex', minHeight: '100vh' }}>
-      <AppBar position="fixed" open={open}>
-        <Toolbar
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleSidebarOpen}
-              edge="start"
-              sx={{
-                marginRight: 5,
-                ...(open && { display: 'none' }),
-              }}>
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              SparkFlow
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              minWidth: 125,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              px: 1,
-            }}>
-            <Typography variant="body1">
-              {mode[0].toUpperCase() + mode.substring(1)} Mode
-            </Typography>
-            <IconButton
-              onClick={toggleThemeMode}
-              color={mode === 'light' ? 'secondary' : 'info'}>
-              {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
+      <NavBar open={open} handleSidebarOpen={handleSidebarOpen} />
       <Drawer
         variant="permanent"
         open={open}
@@ -214,29 +131,11 @@ const Sidebar = ({
           </DrawerHeader>
           <Divider />
           <List>
-            {['Dashboard', 'Projects', 'Tasks', 'Team'].map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                  }}>
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}>
-                    {index === 0 && <DashboardIcon />}
-                    {index === 1 && <ConstructionIcon />}
-                    {index === 2 && <FormatListBulletedIcon />}
-                    {index === 3 && <PeopleIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            <Board
+              open={open}
+              name={'Create Board'}
+              clickHandler={() => console.log('Button pressed')}
+            />
           </List>
         </Box>
         <Box>
@@ -314,4 +213,4 @@ const Sidebar = ({
   );
 };
 
-export default Sidebar;
+export default Navigation;
