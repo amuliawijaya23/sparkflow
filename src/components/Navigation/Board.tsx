@@ -33,8 +33,8 @@ const Board = ({ open, name, logo, clickHandler }: BoardProps) => {
             mr: open ? 3 : 'auto',
             justifyContent: 'center',
           }}>
-          <Avatar src={logo} variant="square" sx={{ bgcolor: '#002147' }}>
-            <AddIcon />
+          <Avatar src={logo} variant="square">
+            {!logo && <AddIcon />}
           </Avatar>
         </ListItemIcon>
         <ListItemText primary={name} sx={{ opacity: open ? 1 : 0 }} />
