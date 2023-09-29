@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Button,
-  Link,
+  Box,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -12,10 +12,15 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import ReCAPTCHA from 'react-google-recaptcha';
+import { verifyCaptcha } from '@actions/reCaptcha.actions';
+
 interface LoginProps {
   email: string;
   isEmailValid: boolean;
   password: string;
+  isVerified: boolean;
+  setIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
   setEmail: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
@@ -25,15 +30,21 @@ interface LoginProps {
   signIn: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
+
 const Login = ({
   email,
   isEmailValid,
   password,
+  isVerified,
+  setIsVerified,
   setEmail,
   setPassword,
   signIn,
 }: LoginProps) => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const reCaptchaRef = useRef<ReCAPTCHA>(null);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -41,6 +52,19 @@ const Login = ({
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
+  };
+
+  const handleCaptchaSubmission = async (token: string | null) => {
+    let success = true;
+    try {
+      await verifyCaptcha(token);
+    } catch (err) {
+      success = false;
+      setIsVerified(false);
+    }
+    if (success) {
+      setIsVerified(true);
+    }
   };
 
   return (
@@ -80,17 +104,27 @@ const Login = ({
           }
         />
       </FormControl>
-      <Button
-        color="primary"
-        fullWidth
-        variant="contained"
-        onClick={signIn}
-        sx={{ mt: 2, mb: 1 }}>
-        Sign In
-      </Button>
-      <Link href="#" variant="body2">
-        Forgot password?
-      </Link>
+      {isVerified && (
+        <Button
+          type="submit"
+          color="primary"
+          fullWidth
+          variant="contained"
+          onClick={signIn}
+          disabled={!isVerified}
+          sx={{ mt: 2, mb: 1 }}>
+          Sign In
+        </Button>
+      )}
+      {!isVerified && (
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+          <ReCAPTCHA
+            sitekey={RECAPTCHA_SITE_KEY}
+            ref={reCaptchaRef}
+            onChange={handleCaptchaSubmission}
+          />
+        </Box>
+      )}
     </>
   );
 };

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
+  Box,
   Button,
   FormControl,
   InputLabel,
@@ -11,11 +12,16 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import ReCAPTCHA from 'react-google-recaptcha';
+import { verifyCaptcha } from '@actions/reCaptcha.actions';
+
 interface RegisterProps {
   username: string;
   email: string;
   isEmailValid: boolean;
   password: string;
+  isVerified: boolean;
+  setIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
   setUsername: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
@@ -28,11 +34,15 @@ interface RegisterProps {
   submitForm: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '';
+
 const Register = ({
   username,
   email,
   isEmailValid,
   password,
+  isVerified,
+  setIsVerified,
   setUsername,
   setEmail,
   setPassword,
@@ -40,12 +50,27 @@ const Register = ({
 }: RegisterProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const reCaptchaRef = useRef<ReCAPTCHA>(null);
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
+  };
+
+  const handleCaptchaSubmission = async (token: string | null) => {
+    let success = true;
+    try {
+      await verifyCaptcha(token);
+    } catch (err) {
+      success = false;
+      setIsVerified(false);
+    }
+    if (success) {
+      setIsVerified(true);
+    }
   };
 
   return (
@@ -95,14 +120,25 @@ const Register = ({
           }
         />
       </FormControl>
-      <Button
-        color="primary"
-        fullWidth
-        variant="contained"
-        onClick={submitForm}
-        sx={{ mt: 2, mb: 1 }}>
-        Sign Up
-      </Button>
+      {isVerified && (
+        <Button
+          color="primary"
+          fullWidth
+          variant="contained"
+          onClick={submitForm}
+          sx={{ mt: 2, mb: 1 }}>
+          Sign Up
+        </Button>
+      )}
+      {!isVerified && (
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+          <ReCAPTCHA
+            sitekey={RECAPTCHA_SITE_KEY}
+            ref={reCaptchaRef}
+            onChange={handleCaptchaSubmission}
+          />
+        </Box>
+      )}
     </>
   );
 };

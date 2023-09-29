@@ -15,11 +15,13 @@ const Authentication = () => {
     password,
     error,
     loading,
+    isVerified,
     handleFormLogin,
     handleFormRegister,
     handleUsernameChange,
     handleEmailChange,
     handlePasswordChange,
+    setIsVerified,
     handleRegister,
     handleLogin,
   } = useAuthentication();
@@ -93,6 +95,8 @@ const Authentication = () => {
           email={email}
           isEmailValid={isEmailValid}
           password={password}
+          isVerified={isVerified}
+          setIsVerified={setIsVerified}
           setEmail={handleEmailChange}
           setPassword={handlePasswordChange}
           signIn={handleLogin}
@@ -104,6 +108,8 @@ const Authentication = () => {
           email={email}
           isEmailValid={isEmailValid}
           password={password}
+          isVerified={isVerified}
+          setIsVerified={setIsVerified}
           setUsername={handleUsernameChange}
           setEmail={handleEmailChange}
           setPassword={handlePasswordChange}

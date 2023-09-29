@@ -17,7 +17,16 @@ const useAuthentication = () => {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
 
+  const [isVerified, setIsVerified] = useState<boolean>(false);
+
   const [loading, setLoading] = useState(false);
+  const resetForm = () => {
+    setUsername('');
+    setEmail('');
+    setPassword('');
+    setError('');
+    setIsVerified(false);
+  };
 
   const handleFormLogin = () => {
     setForm(LOGIN);
@@ -27,13 +36,6 @@ const useAuthentication = () => {
   const handleFormRegister = () => {
     setForm(REGISTER);
     resetForm();
-  };
-
-  const resetForm = () => {
-    setUsername('');
-    setEmail('');
-    setPassword('');
-    setError('');
   };
 
   const handleUsernameChange = (
@@ -63,12 +65,14 @@ const useAuthentication = () => {
     if (!email || !password) {
       setError('All fields are required.');
       setLoading(false);
+      setIsVerified(false);
       return;
     }
 
     if (!isEmailValid) {
       setError('Please use a valid email address.');
       setLoading(false);
+      setIsVerified(false);
       return;
     }
 
@@ -82,11 +86,13 @@ const useAuthentication = () => {
 
       if (res?.error) {
         setError('Invalid email or password.');
+        setIsVerified(false);
         setLoading(false);
         return;
       }
     } catch (err) {
       success = false;
+      setIsVerified(false);
       setLoading(false);
       throw new Error(`An error occured while signing in: ${err}`);
     }
@@ -103,6 +109,7 @@ const useAuthentication = () => {
         }),
       );
       router.push('/dashboard');
+      setIsVerified(false);
       setLoading(false);
     }
   };
@@ -114,12 +121,14 @@ const useAuthentication = () => {
 
     if (!username || !email || !password) {
       setError('All fields are required.');
+      setIsVerified(false);
       setLoading(false);
       return;
     }
 
     if (!isEmailValid) {
       setError('Please use a valid email address.');
+      setIsVerified(false);
       setLoading(false);
       return;
     }
@@ -127,6 +136,7 @@ const useAuthentication = () => {
     const user = await findUser(email);
     if (user !== undefined) {
       setError('A user with that email address already exists.');
+      setIsVerified(false);
       setLoading(false);
       return;
     }
@@ -141,6 +151,7 @@ const useAuthentication = () => {
       });
     } catch (err) {
       success = false;
+      setIsVerified(false);
       setLoading(false);
       throw new Error(`An error occured during registration: ${err}`);
     }
@@ -156,6 +167,7 @@ const useAuthentication = () => {
     email,
     isEmailValid,
     password,
+    isVerified,
     error,
     loading,
     handleFormLogin,
@@ -163,6 +175,7 @@ const useAuthentication = () => {
     handleUsernameChange,
     handleEmailChange,
     handlePasswordChange,
+    setIsVerified,
     handleRegister,
     handleLogin,
   };
