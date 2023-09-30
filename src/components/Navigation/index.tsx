@@ -8,6 +8,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import NavBar from './NavBar';
 import Board from './Board';
 import Profile from './Profile';
+import BoardForm from '@components/BoardForm';
 
 const drawerWidth = 240;
 
@@ -61,6 +62,7 @@ const Drawer = styled(MuiDrawer, {
 const Navigation = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
   const [open, setOpen] = useState<boolean>(false);
+  const [openForm, setOpenForm] = useState<boolean>(false);
 
   const handleSidebarOpen = () => {
     setOpen(true);
@@ -68,6 +70,14 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
 
   const handleSidebarClose = () => {
     setOpen(false);
+  };
+
+  const handleFormOpen = () => {
+    setOpenForm(true);
+  };
+
+  const handleFormClose = () => {
+    setOpenForm(false);
   };
 
   return (
@@ -99,7 +109,7 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
             <Board
               open={open}
               name={'Create Board'}
-              clickHandler={() => console.log('Button pressed')}
+              clickHandler={handleFormOpen}
             />
           </List>
         </Box>
@@ -107,6 +117,7 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
       </Drawer>
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
+        <BoardForm open={openForm} handleClose={handleFormClose} />
         {children}
       </Box>
     </Box>

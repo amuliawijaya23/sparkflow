@@ -24,6 +24,20 @@ interface UserDB {
   __v: number;
 }
 
+export async function getUsers() {
+  await dbConnect();
+  try {
+    const users = await User.find({});
+    const userList = users.map((u) => ({
+      ...u._doc,
+      _id: u._id.toString(),
+    }));
+    return userList;
+  } catch (error) {
+    throw new Error(`An error occured while fetching users: ${error}`);
+  }
+}
+
 export async function createUser(user: UserData): Promise<void> {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   await dbConnect();
