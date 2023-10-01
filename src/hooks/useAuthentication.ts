@@ -142,7 +142,7 @@ const useAuthentication = () => {
 
     const userData = await findUser(email);
 
-    if (!userData) {
+    if (userData) {
       setError('A user with that email address already exists.');
       setIsVerified(false);
       setLoading(false);
