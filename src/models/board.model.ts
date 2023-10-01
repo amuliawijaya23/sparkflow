@@ -4,7 +4,8 @@ const boardScheme = new Schema(
   {
     name: { type: String, required: true, index: { unique: true } },
     team: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    owner: { type: Schema.Types.ObjectId, ref: 'User' },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    logo: String,
   },
   {
     timestamps: true,

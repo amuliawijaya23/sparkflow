@@ -6,16 +6,24 @@ import Board from '@models/board.model';
 export interface BoardData {
   name: string;
   team: [string?];
-  owner: string;
+  user: string;
+  logo: string;
 }
 
 export const createBoard = async (data: BoardData) => {
   await dbConnect();
-  const ownerId = new mongoose.Types.ObjectId(data.owner);
+  const userId = new mongoose.Types.ObjectId(data.user);
+
+  let team: [string?] = [];
+
+  if (data?.team.length > 0) {
+    team = data.team;
+  }
 
   Board.create({
     name: data.name,
-    team: [],
-    owner: ownerId,
+    team: team,
+    user: userId,
+    logo: '',
   });
 };

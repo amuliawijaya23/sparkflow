@@ -23,7 +23,8 @@ const BoardForm = ({
   open: boolean;
   handleClose: () => void;
 }) => {
-  const { name, team, users, setTeam, handleChangeName } = useBoardForm();
+  const { name, team, users, setTeam, handleChangeName, handleCreateForm } =
+    useBoardForm();
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={'sm'} fullWidth>
@@ -75,7 +76,7 @@ const BoardForm = ({
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button type="submit" variant="contained">
+        <Button onClick={handleCreateForm} type="submit" variant="contained">
           Create
         </Button>
       </DialogActions>

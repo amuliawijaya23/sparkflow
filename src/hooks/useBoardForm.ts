@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
 
 import { getUsers } from '@actions/user.actions';
-import { useSession } from 'next-auth/react';
 
-interface User {
+import { useAppSelector } from '@redux/hooks';
+import { selectUser } from '@redux/reducers/userSlice';
+
+import { createBoard } from '@actions/board.actions';
+
+export interface User {
   _id: string;
   email: string;
 }
 
 const useBoardForm = () => {
+  const user = useAppSelector(selectUser);
+
   const [name, setName] = useState<string>('');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [team, setTeam] = useState<any>([]);
   const [users, setUsers] = useState<User[]>([]);
-
-  const { data: session } = useSession();
 
   useEffect(() => {
     const getUserList = async () => {
@@ -23,7 +27,7 @@ const useBoardForm = () => {
       const userOptions = [];
 
       for (const u of userList) {
-        if (u.email !== session?.user?.email) {
+        if (u.email !== user?.email) {
           userOptions.push({ _id: u._id, email: u.email });
         }
       }
@@ -31,7 +35,7 @@ const useBoardForm = () => {
     };
 
     getUserList();
-  }, [session?.user?.email]);
+  }, [user?.email]);
 
   const handleChangeName = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -39,7 +43,16 @@ const useBoardForm = () => {
     setName(e.target.value);
   };
 
-  const handleCreateForm = () => {};
+  const handleCreateForm = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    await createBoard({
+      name: name,
+      team: team,
+      user: user?._id,
+      logo: '',
+    });
+  };
 
   return { name, team, users, setTeam, handleChangeName, handleCreateForm };
 };
