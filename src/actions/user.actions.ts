@@ -57,7 +57,7 @@ export async function createUser(user: UserData): Promise<void> {
 
 export async function findUser(
   email: string | null | undefined,
-): Promise<UserDB | null | undefined> {
+): Promise<string | undefined> {
   await dbConnect();
 
   try {
@@ -65,9 +65,8 @@ export async function findUser(
 
     if (user) {
       const id = user._doc._id.toString();
-      return { _id: id, ...user._doc };
+      return JSON.stringify({ _id: id, ...user._doc });
     }
-    return;
   } catch (error) {
     throw new Error(`An error occured while fetching user data: ${error}`);
   }

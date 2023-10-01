@@ -97,20 +97,27 @@ const useAuthentication = () => {
       throw new Error(`An error occured while signing in: ${err}`);
     }
     if (success) {
-      const user = await findUser(email);
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          _id: user?._id,
-          username: user?.username,
-          email: user?.email,
-          emailVerified: user?.emailVerified,
-          picture: user?.picture,
-        }),
-      );
-      router.push('/dashboard');
-      setIsVerified(false);
-      setLoading(false);
+      try {
+        const userData = await findUser(email);
+        if (userData) {
+          const user = JSON.parse(userData);
+          localStorage.setItem(
+            'user',
+            JSON.stringify({
+              _id: user?._id,
+              username: user?.username,
+              email: user?.email,
+              emailVerified: user?.emailVerified,
+              picture: user?.picture,
+            }),
+          );
+          router.push('/dashboard');
+          setIsVerified(false);
+          setLoading(false);
+        }
+      } catch (err) {
+        throw new Error(`Error when fetching user data: ${err}`);
+      }
     }
   };
 
@@ -133,13 +140,15 @@ const useAuthentication = () => {
       return;
     }
 
-    const user = await findUser(email);
-    if (user !== undefined) {
+    const userData = await findUser(email);
+
+    if (!userData) {
       setError('A user with that email address already exists.');
       setIsVerified(false);
       setLoading(false);
       return;
     }
+
     let success = true;
     try {
       createUser({

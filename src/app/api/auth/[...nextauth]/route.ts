@@ -37,12 +37,13 @@ export const authOptions: NextAuthOptions = {
         const { email, password } = credentials as Credentials;
 
         try {
-          const user = await findUser(email);
+          const userData = await findUser(email);
 
-          if (!user) {
+          if (!userData) {
             return null;
           }
 
+          const user = JSON.parse(userData);
           const isMatch = await compare(password, user.password);
           if (!isMatch) {
             return null;
