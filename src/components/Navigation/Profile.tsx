@@ -57,7 +57,7 @@ const Profile = ({ navOpen }: { navOpen: boolean }) => {
                   width: 35,
                   bgcolor: '',
                 }}>
-                {user.username[0]?.toUpperCase()}
+                {user?.username && user.username[0].toUpperCase()}
               </Avatar>
             </ListItemIcon>
             <ListItemText

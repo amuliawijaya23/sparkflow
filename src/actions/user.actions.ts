@@ -12,7 +12,7 @@ export interface UserData {
   password: string;
 }
 
-interface UserDB {
+export interface UserDB {
   _id: string;
   username: string;
   email: string;

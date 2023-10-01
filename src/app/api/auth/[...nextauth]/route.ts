@@ -1,52 +1,60 @@
 import nextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
-import { NextAuthOptions } from 'next-auth';
-
-import dbConnect from '@lib/dbConnect';
+import { NextAuthOptions, User } from 'next-auth';
 import { findUser } from '@actions/user.actions';
 import { compare } from 'bcryptjs';
 
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
-const NEXTAUTH_JWT_SECRET = process.env.NEXTAUTH_JWT_SECRET;
 
-const authOptions: NextAuthOptions = {
-  providers: [
-    CredentialsProvider({
-      id: 'credentials',
-      name: 'credentials',
-      credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials) {
-        await dbConnect();
-        const user = await findUser(credentials?.email);
+interface Credentials {
+  email: string;
+  password: string;
+}
 
-        if (user === undefined) {
-          throw new Error('Email is not registered.');
-        }
+interface MyUser extends User {
+  _id: string;
+  username: string;
+  email: string;
+  emailVerified: boolean;
+  password: string;
+  picture: string;
+  updatedAt: Date;
+  createdAt: Date;
+  __v: number;
+}
 
-        const isPasswordMatch = await compare(
-          credentials!.password,
-          user['password'],
-        );
-
-        if (!isPasswordMatch) {
-          throw new Error('Password is incorrect.');
-        }
-        return user;
-      },
-    }),
-  ],
+export const authOptions: NextAuthOptions = {
+  session: { strategy: 'jwt' },
+  secret: NEXTAUTH_SECRET,
   pages: {
     signIn: '/',
   },
-  session: {
-    strategy: 'jwt',
-  },
-  jwt: { secret: NEXTAUTH_JWT_SECRET },
-  secret: NEXTAUTH_SECRET,
+  providers: [
+    CredentialsProvider({
+      id: 'credentials',
+      credentials: {},
+      async authorize(credentials) {
+        const { email, password } = credentials as Credentials;
+
+        try {
+          const user = await findUser(email);
+
+          if (!user) {
+            return null;
+          }
+
+          const isMatch = await compare(password, user.password);
+          if (!isMatch) {
+            return null;
+          }
+
+          return user as MyUser;
+        } catch (error) {
+          throw new Error(`An error occured while signing in: ${error}`);
+        }
+      },
+    }),
+  ],
 };
 
 export const handler = nextAuth(authOptions);

@@ -8,7 +8,18 @@ import {
 
 import Authentication from '@components/Authentication';
 
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+
 export default async function Home() {
+  const session = await getServerSession();
+
+  console.log('SESSION: ', session);
+
+  if (session) {
+    redirect('/dashboard');
+  }
+
   return (
     <Grid container component={Paper} sx={{ height: '100vh' }}>
       <Grid
