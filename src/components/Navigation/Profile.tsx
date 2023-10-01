@@ -31,6 +31,11 @@ const Profile = ({ navOpen }: { navOpen: boolean }) => {
     setOpen(null);
   };
 
+  const handleSignOut = () => {
+    localStorage.clear();
+    signOut();
+  };
+
   return (
     <Box>
       <List>
@@ -83,7 +88,7 @@ const Profile = ({ navOpen }: { navOpen: boolean }) => {
               disablePadding
               sx={{ display: 'block' }}>
               <ListItemButton
-                onClick={index === 0 ? () => {} : () => signOut()}
+                onClick={index === 0 ? () => {} : handleSignOut}
                 sx={{
                   justifyContent: 'initial',
                   px: 10,
