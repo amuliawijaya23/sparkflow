@@ -26,7 +26,7 @@ const BoardForm = ({
   const { name, team, users, setTeam, handleChangeName } = useBoardForm();
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth={'xs'}>
+    <Dialog open={open} onClose={handleClose} maxWidth={'sm'} fullWidth>
       <DialogTitle>Create Board</DialogTitle>
       <DialogContent>
         <Grid container sx={{ width: '100%' }}>
