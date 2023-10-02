@@ -3,7 +3,8 @@ import { RootState } from '@redux/store';
 
 export interface UserProfile {
   _id: string;
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   emailVerified: boolean;
   picture: string;
@@ -11,7 +12,8 @@ export interface UserProfile {
 
 const initialState: UserProfile = {
   _id: '',
-  username: '',
+  firstName: '',
+  lastName: '',
   email: '',
   emailVerified: false,
   picture: '',
@@ -24,7 +26,8 @@ export const userSlice = createSlice({
     logout: () => initialState,
     login: (state, action: PayloadAction<UserProfile>) => {
       state._id = action.payload._id;
-      state.username = action.payload.username;
+      state.firstName = action.payload.firstName;
+      state.lastName = action.payload.lastName;
       state.email = action.payload.email;
       state.emailVerified = action.payload.emailVerified;
       state.picture = action.payload.picture;

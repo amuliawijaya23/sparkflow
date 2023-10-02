@@ -5,7 +5,8 @@ import User from '@models/user.model';
 import bcrypt from 'bcryptjs';
 
 export interface UserData {
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   emailVerified: boolean;
   picture: string;
@@ -14,7 +15,8 @@ export interface UserData {
 
 export interface UserDB {
   _id: string;
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   emailVerified: boolean;
   password: string;
@@ -42,14 +44,29 @@ export async function createUser(user: UserData): Promise<void> {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   await dbConnect();
 
+  const data = {
+    firstName: `${user.firstName[0].toUpperCase()}${user.firstName
+      .substring(1)
+      .toLocaleLowerCase()}`,
+    lastName:
+      user.lastName.length < 1
+        ? ''
+        : user.lastName.length > 1
+        ? `${user.lastName[0].toUpperCase()}${user.lastName
+            .substring(1)
+            .toLocaleLowerCase()}`
+        : user.lastName.toUpperCase(),
+
+    email: user.email.toLocaleLowerCase(),
+    emailVerified: user.emailVerified,
+    picture: user.picture,
+    password: hashedPassword,
+  };
+
+  console.log('DATA: ', data);
+
   try {
-    await User.create({
-      username: user.username.toLocaleLowerCase(),
-      email: user.email.toLocaleLowerCase(),
-      emailVerified: user.emailVerified,
-      picture: user.picture,
-      password: hashedPassword,
-    });
+    await User.create(data);
   } catch (error) {
     throw new Error(`An error occured while registering user: ${error}`);
   }

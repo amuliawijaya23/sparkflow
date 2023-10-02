@@ -11,7 +11,8 @@ const useAuthentication = () => {
   const router = useRouter();
 
   const [form, setForm] = useState<string>(LOGIN);
-  const [username, setUsername] = useState<string>('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
   const [password, setPassword] = useState<string>('');
@@ -21,7 +22,8 @@ const useAuthentication = () => {
 
   const [loading, setLoading] = useState(false);
   const resetForm = () => {
-    setUsername('');
+    setFirstName('');
+    setLastName('');
     setEmail('');
     setPassword('');
     setError('');
@@ -38,10 +40,16 @@ const useAuthentication = () => {
     resetForm();
   };
 
-  const handleUsernameChange = (
+  const handleFirstNameChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setUsername(e.target.value);
+    setFirstName(e.target.value);
+  };
+
+  const handleLastNameChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setLastName(e.target.value);
   };
 
   const handleEmailChange = (
@@ -105,7 +113,8 @@ const useAuthentication = () => {
             'user',
             JSON.stringify({
               _id: user?._id,
-              username: user?.username,
+              firstName: user?.firstName,
+              lastName: user?.lastName,
               email: user?.email,
               emailVerified: user?.emailVerified,
               picture: user?.picture,
@@ -126,7 +135,7 @@ const useAuthentication = () => {
     setLoading(true);
     e.preventDefault();
 
-    if (!username || !email || !password) {
+    if (!firstName || !email || !password) {
       setError('All fields are required.');
       setIsVerified(false);
       setLoading(false);
@@ -140,19 +149,23 @@ const useAuthentication = () => {
       return;
     }
 
-    const userData = await findUser(email);
-
-    if (userData) {
-      setError('A user with that email address already exists.');
-      setIsVerified(false);
-      setLoading(false);
-      return;
+    try {
+      const userData = await findUser(email);
+      if (userData) {
+        setError('A user with that email address already exists.');
+        setIsVerified(false);
+        setLoading(false);
+        return;
+      }
+    } catch (err) {
+      throw new Error(`An error occured while validating user Data: ${err}`);
     }
 
     let success = true;
     try {
       createUser({
-        username: username,
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         emailVerified: false,
         picture: '',
@@ -172,7 +185,8 @@ const useAuthentication = () => {
 
   return {
     form,
-    username,
+    firstName,
+    lastName,
     email,
     isEmailValid,
     password,
@@ -181,7 +195,8 @@ const useAuthentication = () => {
     loading,
     handleFormLogin,
     handleFormRegister,
-    handleUsernameChange,
+    handleFirstNameChange,
+    handleLastNameChange,
     handleEmailChange,
     handlePasswordChange,
     setIsVerified,

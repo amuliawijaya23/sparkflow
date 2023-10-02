@@ -19,6 +19,7 @@
       }
     ],
     "paths": {
+      "@app/*": ["./src/app/*"],
       "@components/*": ["./src/components/*"],
       "@redux/*": ["./src/redux/*"],
       "@models/*": ["./src/models/*"],

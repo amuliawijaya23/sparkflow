@@ -9,7 +9,8 @@ import { LOGIN, REGISTER } from '@hooks/useAuthentication';
 const Authentication = () => {
   const {
     form,
-    username,
+    firstName,
+    lastName,
     email,
     isEmailValid,
     password,
@@ -18,7 +19,8 @@ const Authentication = () => {
     isVerified,
     handleFormLogin,
     handleFormRegister,
-    handleUsernameChange,
+    handleFirstNameChange,
+    handleLastNameChange,
     handleEmailChange,
     handlePasswordChange,
     setIsVerified,
@@ -104,13 +106,15 @@ const Authentication = () => {
       )}
       {form === REGISTER && (
         <Register
-          username={username}
+          firstName={firstName}
+          lastName={lastName}
           email={email}
           isEmailValid={isEmailValid}
           password={password}
           isVerified={isVerified}
           setIsVerified={setIsVerified}
-          setUsername={handleUsernameChange}
+          setFirstName={handleFirstNameChange}
+          setLastName={handleLastNameChange}
           setEmail={handleEmailChange}
           setPassword={handlePasswordChange}
           submitForm={handleRegister}
