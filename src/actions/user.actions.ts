@@ -63,8 +63,6 @@ export async function createUser(user: UserData): Promise<void> {
     password: hashedPassword,
   };
 
-  console.log('DATA: ', data);
-
   try {
     await User.create(data);
   } catch (error) {

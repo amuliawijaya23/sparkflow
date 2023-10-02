@@ -68,6 +68,7 @@ const Profile = ({ navOpen }: { navOpen: boolean }) => {
 
   const handleOpenAccountForm = () => {
     setOpenAccountForm(true);
+    handleProfileClose();
   };
 
   return (
@@ -136,7 +137,7 @@ const Profile = ({ navOpen }: { navOpen: boolean }) => {
         </List>
       </Popover>
       <AccountForm
-        open={openAccountForm}
+        openForm={openAccountForm}
         setOpenAccountForm={setOpenAccountForm}
       />
     </Box>
