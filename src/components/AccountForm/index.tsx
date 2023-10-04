@@ -11,9 +11,22 @@ import {
   Avatar,
   Typography,
   TextField,
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  OutlinedInput,
   IconButton,
+  Alert,
 } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import TwitterIcon from '@mui/icons-material/Twitter';
 
 import useAccountForm from '@hooks/useAccountForm';
 
@@ -36,7 +49,7 @@ const stringToColor = (string: string) => {
 
 const stringAvatar = (name: string) => {
   return {
-    sx: { bgcolor: stringToColor(name), width: 50, height: 50 },
+    sx: { bgcolor: stringToColor(name), width: 55, height: 55 },
     children:
       name.split(' ').length > 1
         ? `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`
@@ -53,16 +66,45 @@ const AccountForm = ({
 }) => {
   const [openDropzone, setOpenDropzone] = useState(false);
 
-  const { user, image, submitHandler, setImage } = useAccountForm();
+  const {
+    user,
+    image,
+    firstName,
+    lastName,
+    dateOfBirth,
+    linkedIn,
+    instagram,
+    twitter,
+    github,
+    isLinkedInURL,
+    isInstagramURL,
+    isTwitterURL,
+    isGithubURL,
+    error,
+    submitHandler,
+    setImage,
+    handleFirstNameChange,
+    handleLastNameChange,
+    handleDateOfBirthChange,
+    handleLinkedInChange,
+    handleInstagramChange,
+    handleTwitterChange,
+    handleGithubChange,
+    resetForm,
+  } = useAccountForm();
 
   const handleClose = () => {
     setOpenAccountForm(false);
+    resetForm();
   };
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setImage(acceptedFiles[0]);
-    setOpenDropzone(false);
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      setImage(acceptedFiles[0]);
+      setOpenDropzone(false);
+    },
+    [setImage],
+  );
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     onDrop,
@@ -77,13 +119,21 @@ const AccountForm = ({
           <Grid container sx={{ width: '100%' }}>
             <Grid xs={12} sx={{ p: 1, mb: 1 }}>
               <IconButton onClick={() => setOpenDropzone(true)}>
-                {image ? (
+                {image && (
                   <Avatar
-                    sx={{ width: 50, height: 50 }}
+                    sx={{ width: 55, height: 55 }}
                     src={URL.createObjectURL(image)}
                     alt="temp profile image"
                   />
-                ) : (
+                )}
+                {!image && user.picture && (
+                  <Avatar
+                    sx={{ width: 55, height: 55 }}
+                    src={user.picture}
+                    alt="profile image"
+                  />
+                )}
+                {!image && !user.picture && (
                   <Avatar
                     {...stringAvatar(`${user.firstName} ${user.lastName}`)}
                   />
@@ -96,6 +146,8 @@ const AccountForm = ({
                 variant="outlined"
                 size="small"
                 label="First Name"
+                value={firstName}
+                onChange={handleFirstNameChange}
               />
             </Grid>
             <Grid xs={12} md={6} sx={{ mt: 0.5, p: 1 }}>
@@ -104,9 +156,106 @@ const AccountForm = ({
                 variant="outlined"
                 size="small"
                 label="Last Name"
+                value={lastName}
+                onChange={handleLastNameChange}
               />
             </Grid>
-            <Grid xs={12} sx={{ mt: 1 }}></Grid>
+            <Grid xs={6} sx={{ mt: 0.5, p: 1 }}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Date of Birth"
+                  slotProps={{ textField: { size: 'small', fullWidth: true } }}
+                  value={dateOfBirth}
+                  onChange={handleDateOfBirthChange}
+                />
+              </LocalizationProvider>
+            </Grid>
+            <Grid xs={12} sx={{ mt: 1, p: 1 }}>
+              <Typography variant="h6" component={'p'}>
+                Social Profile
+              </Typography>
+            </Grid>
+            <Grid xs={6} sx={{ mt: 0.5, p: 1 }}>
+              <FormControl fullWidth size="small" variant="outlined">
+                <OutlinedInput
+                  id="outlined-adornment-linkedIn"
+                  type="text"
+                  placeholder="LinkedIn URL"
+                  onChange={handleLinkedInChange}
+                  value={linkedIn}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <LinkedInIcon />
+                    </InputAdornment>
+                  }
+                />
+                {!isLinkedInURL && linkedIn && linkedIn.length > 0 && (
+                  <FormHelperText>Please enter a valid url.</FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+            <Grid xs={6} sx={{ mt: 0.5, p: 1 }}>
+              <FormControl fullWidth size="small" variant="outlined">
+                <OutlinedInput
+                  id="outlined-adornment-instagram"
+                  type="text"
+                  placeholder="Instagram URL"
+                  onChange={handleInstagramChange}
+                  value={instagram}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <InstagramIcon />
+                    </InputAdornment>
+                  }
+                />
+                {!isInstagramURL && instagram && instagram.length > 0 && (
+                  <FormHelperText>Please enter a valid url.</FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+            <Grid xs={6} sx={{ mt: 0.5, p: 1 }}>
+              <FormControl fullWidth size="small" variant="outlined">
+                <OutlinedInput
+                  id="outlined-adornment-twitter"
+                  type="text"
+                  placeholder="Twitter URL"
+                  onChange={handleTwitterChange}
+                  value={twitter}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <TwitterIcon />
+                    </InputAdornment>
+                  }
+                />
+                {!isTwitterURL && twitter && twitter.length > 0 && (
+                  <FormHelperText>Please enter a valid url.</FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+            <Grid xs={6} sx={{ mt: 0.5, p: 1 }}>
+              <FormControl fullWidth size="small" variant="outlined">
+                <OutlinedInput
+                  id="outlined-adornment-github"
+                  type="text"
+                  placeholder="Github URL"
+                  onChange={handleGithubChange}
+                  value={github}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <GitHubIcon />
+                    </InputAdornment>
+                  }
+                />
+                {!isGithubURL && github && github.length > 0 && (
+                  <FormHelperText>Please enter a valid url.</FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+            {error && (
+              <Grid xs={12} sx={{ mt: 1, p: 1 }}>
+                <Alert severity="error">{error}</Alert>
+              </Grid>
+            )}
           </Grid>
         </DialogContent>
         <DialogActions>

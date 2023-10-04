@@ -8,6 +8,11 @@ export interface UserProfile {
   email: string;
   emailVerified: boolean;
   picture: string;
+  dateOfBirth?: Date;
+  linkedIn?: string;
+  instagram?: string;
+  twitter?: string;
+  github?: string;
 }
 
 const initialState: UserProfile = {
@@ -24,14 +29,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logout: () => initialState,
-    login: (state, action: PayloadAction<UserProfile>) => {
-      state._id = action.payload._id;
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
-      state.email = action.payload.email;
-      state.emailVerified = action.payload.emailVerified;
-      state.picture = action.payload.picture;
-    },
+    login: (state, action: PayloadAction<UserProfile>) => action.payload,
   },
 });
 

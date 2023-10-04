@@ -8,6 +8,11 @@ const userSchema = new Schema(
     emailVerified: { type: Boolean, required: true },
     password: { type: String, required: true },
     picture: String,
+    dateOfBirth: Date,
+    linkedIn: String,
+    instagram: String,
+    twitter: String,
+    github: String,
   },
   { timestamps: true },
 );

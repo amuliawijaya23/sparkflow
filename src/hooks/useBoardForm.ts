@@ -7,7 +7,7 @@ import { selectUser } from '@redux/reducers/userSlice';
 
 import { createBoard } from '@actions/board.actions';
 
-export interface User {
+interface User {
   _id: string;
   email: string;
 }
