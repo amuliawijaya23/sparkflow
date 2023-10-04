@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '@redux/hooks';
 import { login } from '@redux/reducers/userSlice';
 import { selectUser } from '@redux/reducers/userSlice';
 
-import { uploadImage } from '@actions/upload.actions';
+import { uploadImage } from '@actions/s3.actions';
 
 import { updateUser } from '@actions/user.actions';
 
