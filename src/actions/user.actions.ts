@@ -4,7 +4,7 @@ import dbConnect from '@lib/dbConnect';
 import User from '@models/user.model';
 import bcrypt from 'bcryptjs';
 
-export async function getUsers() {
+export const getUsers = async () => {
   await dbConnect();
   try {
     const users = await User.find({});
@@ -16,16 +16,16 @@ export async function getUsers() {
   } catch (error) {
     throw new Error(`An error occured while fetching users: ${error}`);
   }
-}
+};
 
-export async function createUser(user: {
+export const createUser = async (user: {
   firstName: string;
   lastName: string;
   picture: string;
   email: string;
   emailVerified: boolean;
   password: string;
-}): Promise<void> {
+}) => {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   await dbConnect();
 
@@ -53,11 +53,9 @@ export async function createUser(user: {
   } catch (error) {
     throw new Error(`An error occured while registering user: ${error}`);
   }
-}
+};
 
-export async function findUser(
-  email: string | null | undefined,
-): Promise<string | undefined> {
+export const findUser = async (email: string | null | undefined) => {
   await dbConnect();
 
   try {
@@ -70,9 +68,9 @@ export async function findUser(
   } catch (error) {
     throw new Error(`An error occured while fetching user data: ${error}`);
   }
-}
+};
 
-export async function updateUser(
+export const updateUser = async (
   email: string | null | undefined,
   data: {
     firstName: string;
@@ -83,11 +81,11 @@ export async function updateUser(
     twitter?: string;
     github?: string;
   },
-): Promise<void> {
+) => {
   await dbConnect();
   try {
     await User.findOneAndUpdate({ email }, { ...data });
   } catch (error) {
     throw new Error(`An error occured while updating user data: ${error}`);
   }
-}
+};
