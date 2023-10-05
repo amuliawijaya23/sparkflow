@@ -109,6 +109,7 @@ const useAuthentication = () => {
         const userData = await findUser(email);
         if (userData) {
           const user = JSON.parse(userData);
+
           localStorage.setItem(
             'user',
             JSON.stringify({

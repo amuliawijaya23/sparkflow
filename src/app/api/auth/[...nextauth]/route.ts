@@ -24,7 +24,7 @@ interface MyUser extends User {
 }
 
 export const authOptions: NextAuthOptions = {
-  session: { strategy: 'jwt', maxAge: 43200 },
+  session: { strategy: 'jwt', maxAge: 12 * 60 * 60 },
   secret: NEXTAUTH_SECRET,
   pages: {
     signIn: '/',

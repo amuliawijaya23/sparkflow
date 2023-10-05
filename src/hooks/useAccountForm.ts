@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '@redux/hooks';
 import { login } from '@redux/reducers/userSlice';
 import { selectUser } from '@redux/reducers/userSlice';
 
-import { uploadImage } from '@actions/s3.actions';
+import { uploadImage, getImageURL } from '@actions/s3.actions';
 
 import { updateUser } from '@actions/user.actions';
 
@@ -132,30 +132,19 @@ const useAccountForm = () => {
 
     userData.firstName = firstName;
     userData.lastName = lastName;
-
     if (dateOfBirth) {
       userData.dateOfBirth = dateOfBirth;
     }
-
-    if (linkedIn && isLinkedInURL) {
-      userData.linkedIn = linkedIn;
-    }
-
-    if (instagram && isInstagramURL) {
-      userData.instagram = instagram;
-    }
-
-    if (twitter && isTwitterURL) {
-      userData.twitter = twitter;
-    }
-
-    if (github && isGithubURL) {
-      userData.github = github;
-    }
+    userData.linkedIn = linkedIn;
+    userData.instagram = instagram;
+    userData.twitter = twitter;
+    userData.github = github;
 
     try {
       await updateUser(user.email, userData);
       localStorage.clear();
+      const imageURL = await getImageURL(userData.picture);
+      userData.picture = imageURL;
       localStorage.setItem('user', JSON.stringify(userData));
       dispatch(login(userData));
     } catch (err) {

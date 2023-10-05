@@ -5,6 +5,8 @@ import { useSession } from 'next-auth/react';
 import { useAppDispatch } from '@redux/hooks';
 import { login } from '@redux/reducers/userSlice';
 
+import { getImageURL } from '@actions/s3.actions';
+
 const useApplication = () => {
   const { data: session, status } = useSession();
 
@@ -17,6 +19,10 @@ const useApplication = () => {
 
         if (userData) {
           const user = JSON.parse(userData);
+          if (user.picture) {
+            const imageURL = await getImageURL(user.picture);
+            user.picture = imageURL;
+          }
           dispatch(login(user));
         }
       } catch (error) {

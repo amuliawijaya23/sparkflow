@@ -111,6 +111,11 @@ const AccountForm = ({
     noClick: true,
   });
 
+  const onSubmit = () => {
+    submitHandler();
+    handleClose();
+  };
+
   return (
     <>
       <Dialog open={openForm} onClose={handleClose} maxWidth={'sm'} fullWidth>
@@ -259,7 +264,7 @@ const AccountForm = ({
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" onClick={submitHandler}>
+          <Button variant="contained" onClick={onSubmit}>
             Save
           </Button>
         </DialogActions>
