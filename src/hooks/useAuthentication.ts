@@ -119,6 +119,11 @@ const useAuthentication = () => {
               email: user?.email,
               emailVerified: user?.emailVerified,
               picture: user?.picture,
+              dateOfBirth: user?.dateOfBirth ?? null,
+              linkeInd: user?.linkedIn ?? '',
+              instagram: user?.instagram ?? '',
+              twitter: user?.twitter ?? '',
+              github: user?.github ?? '',
             }),
           );
           router.push('/dashboard');

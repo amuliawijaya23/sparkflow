@@ -6,6 +6,7 @@ import { useAppDispatch } from '@redux/hooks';
 import { login } from '@redux/reducers/userSlice';
 
 import { getImageURL } from '@actions/s3.actions';
+import isURL from 'validator/lib/isURL';
 
 const useApplication = () => {
   const { data: session, status } = useSession();
@@ -19,7 +20,7 @@ const useApplication = () => {
 
         if (userData) {
           const user = JSON.parse(userData);
-          if (user.picture) {
+          if (user.picture && !isURL(user.picture)) {
             const imageURL = await getImageURL(user.picture);
             user.picture = imageURL;
           }

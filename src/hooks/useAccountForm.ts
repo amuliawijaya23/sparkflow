@@ -32,8 +32,9 @@ const useAccountForm = () => {
     const initializeForm = () => {
       setFirstName(user.firstName);
       setLastName(user.lastName);
+
       if (user.dateOfBirth) {
-        setDateOfBirth(user.dateOfBirth);
+        setDateOfBirth(new Date(user.dateOfBirth));
       }
       if (user.linkedIn) {
         setLinkedIn(user.linkedIn);
@@ -143,8 +144,10 @@ const useAccountForm = () => {
     try {
       await updateUser(user.email, userData);
       localStorage.clear();
-      const imageURL = await getImageURL(userData.picture);
-      userData.picture = imageURL;
+      if (image) {
+        const imageURL = await getImageURL(userData.picture);
+        userData.picture = imageURL;
+      }
       localStorage.setItem('user', JSON.stringify(userData));
       dispatch(login(userData));
     } catch (err) {
@@ -157,7 +160,9 @@ const useAccountForm = () => {
     setImage(null);
     setFirstName(user.firstName);
     setLastName(user.lastName);
-    user.dateOfBirth ? setDateOfBirth(user.dateOfBirth) : setDateOfBirth(null);
+    user.dateOfBirth
+      ? setDateOfBirth(new Date(user.dateOfBirth))
+      : setDateOfBirth(null);
     user.linkedIn ? setLinkedIn(user.linkedIn) : setLinkedIn('');
     user.instagram ? setInstagram(user.instagram) : setInstagram('');
     user.twitter ? setTwitter(user.twitter) : setTwitter('');
