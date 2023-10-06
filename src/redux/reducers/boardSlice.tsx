@@ -23,5 +23,5 @@ export const boardSlice = createSlice({
 });
 
 export const { updateBoards } = boardSlice.actions;
-export const selectUser = (state: RootState) => state.boards;
+export const selectBoards = (state: RootState) => state.boards;
 export default boardSlice.reducer;

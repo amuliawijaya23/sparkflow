@@ -10,6 +10,9 @@ import Board from './Board';
 import Profile from './Profile';
 import BoardForm from '@components/BoardForm';
 
+import { useAppSelector } from '@redux/hooks';
+import { selectBoards } from '@redux/reducers/boardSlice';
+
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -64,6 +67,8 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [openForm, setOpenForm] = useState<boolean>(false);
 
+  const boards = useAppSelector(selectBoards);
+
   const handleSidebarOpen = () => {
     setOpen(true);
   };
@@ -106,6 +111,15 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
           </DrawerHeader>
           <Divider />
           <List>
+            {boards.map((board) => (
+              <Board
+                key={`${board.name}`}
+                open={open}
+                name={board.name}
+                logo={board.logo}
+                clickHandler={() => {}}
+              />
+            ))}
             <Board
               open={open}
               name={'Create Board'}
