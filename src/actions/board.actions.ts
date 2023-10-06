@@ -21,10 +21,28 @@ export const createBoard = async (data: BoardData) => {
       team.push(new mongoose.Types.ObjectId(u));
     }
   }
-  Board.create({
+  await Board.create({
     name: data.name,
     team: team,
     user: userId,
     logo: data.logo,
   });
+};
+
+export const getBoards = async (id: string) => {
+  await dbConnect();
+  const user_id = new mongoose.Types.ObjectId(id);
+
+  const myBoards = await Board.find({
+    $or: [{ user: user_id }, { team: user_id }],
+  });
+
+  const boardData = myBoards.map((b) => ({
+    ...b._doc,
+    _id: b._doc._id.toString(),
+    team: b._doc.team.map((t: mongoose.Types.ObjectId) => t.toString()),
+    user: b._doc.user.toString(),
+  }));
+
+  return boardData;
 };

@@ -4,9 +4,12 @@ import { useSession } from 'next-auth/react';
 
 import { useAppDispatch } from '@redux/hooks';
 import { login } from '@redux/reducers/userSlice';
+import { updateBoards } from '@redux/reducers/boardSlice';
+
+import isURL from 'validator/lib/isURL';
 
 import { getImageURL } from '@actions/s3.actions';
-import isURL from 'validator/lib/isURL';
+import { getBoards } from '@actions/board.actions';
 
 const useApplication = () => {
   const { data: session, status } = useSession();
@@ -24,7 +27,12 @@ const useApplication = () => {
             const imageURL = await getImageURL(user.picture);
             user.picture = imageURL;
           }
+
           dispatch(login(user));
+
+          const boards = await getBoards(user._id);
+
+          dispatch(updateBoards(boards));
         }
       } catch (error) {
         throw new Error(`An error occured when fetching user data: ${error}`);
