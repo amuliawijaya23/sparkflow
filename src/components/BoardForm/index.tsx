@@ -12,9 +12,12 @@ import {
   Typography,
   TextField,
   Chip,
+  ListItem,
+  ListItemText,
 } from '@mui/material';
 
 import useBoardForm from '@hooks/useBoardForm';
+import React from 'react';
 
 const BoardForm = ({
   open,
@@ -25,6 +28,12 @@ const BoardForm = ({
 }) => {
   const { name, team, users, setTeam, handleChangeName, handleCreateForm } =
     useBoardForm();
+
+  const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    handleCreateForm();
+    handleClose();
+  };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={'sm'} fullWidth>
@@ -53,6 +62,14 @@ const BoardForm = ({
               onChange={(event, newValue) => {
                 setTeam(newValue);
               }}
+              renderOption={(props, option) => (
+                <ListItem {...props} key={`${option}-option`}>
+                  <ListItemText
+                    primary={option}
+                    primaryTypographyProps={{ variant: 'body2' }}
+                  />
+                </ListItem>
+              )}
               renderTags={(value: string[], getTagProps) =>
                 value.map((option: string, index: number) => (
                   <Chip
@@ -66,6 +83,7 @@ const BoardForm = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  key="email-address-search"
                   label="Email address or Username"
                   variant="outlined"
                   size="small"
@@ -76,7 +94,7 @@ const BoardForm = ({
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCreateForm} type="submit" variant="contained">
+        <Button onClick={onSubmit} type="submit" variant="contained">
           Create
         </Button>
       </DialogActions>

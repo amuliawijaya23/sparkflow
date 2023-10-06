@@ -43,12 +43,20 @@ const useBoardForm = () => {
     setName(e.target.value);
   };
 
-  const handleCreateForm = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleCreateForm = async () => {
+    const teamMembers = [];
+
+    if (team.length > 0) {
+      for (const u of users) {
+        if (team.includes(u.email)) {
+          teamMembers.push(u._id);
+        }
+      }
+    }
 
     await createBoard({
       name: name,
-      team: team,
+      team: teamMembers,
       user: user?._id,
       logo: '',
     });
